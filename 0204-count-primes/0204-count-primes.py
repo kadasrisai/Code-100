@@ -4,10 +4,17 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
-        seen, ans = [0] * n, 0
-        for num in range(2, n):
-            if seen[num]: continue
-            ans += 1
-            seen[num*num:n:num] = [1] * ((n - 1) // num - num + 1)
-        return ans
+        seen, ans = [True] * n, 0
+        p=2
+        while (p*p<=n):
+            if seen[p]:
+                for i in range(p*p,n,p):
+                    seen[i]=False    
+            p+=1
         
+        for p in range(2, n):
+            if seen[p]:
+                ans+=1
+        return ans
+            
+            
