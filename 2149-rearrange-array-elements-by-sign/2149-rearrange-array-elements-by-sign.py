@@ -4,20 +4,16 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[int]
         """
-        v1 = []
-        v2 = []
-        v3 = []
+        n = len(nums)
+        ans = [0] * n
+        positive_index, negative_index = 0, 1
 
         for num in nums:
             if num > 0:
-                v1.append(num)
-            else:
-                v2.append(num)
+                ans[positive_index] = num
+                positive_index += 2
+            if num < 0:
+                ans[negative_index] = num
+                negative_index += 2
 
-        for i in range(len(v1)):
-            v3.append(v1[i])
-            v3.append(v2[i])
-
-        return v3
-                
-        
+        return ans
