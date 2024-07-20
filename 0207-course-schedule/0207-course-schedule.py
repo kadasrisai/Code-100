@@ -1,28 +1,27 @@
 class Solution(object):
-    def canFinish(self, n, prerequisites):
-        adj = [[] for _ in range(n)]
-        indegree = [0] * n
-        ans = []
-
-        for pair in prerequisites:
-            course = pair[0]
-            prerequisite = pair[1]
-            adj[prerequisite].append(course)
-            indegree[course] += 1
-
-        queue = deque()
+    def canFinish(self, numCourses, prerequisites):
+        def dfs(sv,visited,path):
+            visited[sv]=1
+            path[sv]=1
+            for u in adj[sv]:
+                if visited[u]==0:
+                    if dfs(u,visited,path):
+                        return True
+                elif path[u]==1:
+                    return True
+            path[sv]=0
+            return False
+        
+        adj=[[] for i in range(numCourses)]
+        n=len(prerequisites)
         for i in range(n):
-            if indegree[i] == 0:
-                queue.append(i)
-
-        while queue:
-            current = queue.popleft()
-            ans.append(current)
-
-            for next_course in adj[current]:
-                indegree[next_course] -= 1
-                if indegree[next_course] == 0:
-                    queue.append(next_course)
-
-        return len(ans) == n
+            u,v=prerequisites[i][0],prerequisites[i][1]
+            adj[v].append(u)
+        visited=[0]*numCourses
+        path=[0]*numCourses
+        for i in range(numCourses):
+            if visited[i]==0:
+                if dfs(i,visited,path):
+                    return False
+        return True
         
